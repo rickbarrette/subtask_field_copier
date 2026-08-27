@@ -28,17 +28,15 @@ module SubtaskFieldCopier
             end
             @issue.custom_field_values = cf_values
 
-            # --- COPY CUSTOMER, VEHICLE & ESTIMATE---
-            if @issue.respond_to?(:customer=) && parent_issue.respond_to?(:customer)
-              @issue.customer = parent_issue.customer 
-            end
-            
-            if @issue.respond_to?(:vehicle=) && parent_issue.respond_to?(:vehicle)
-              @issue.vehicle = parent_issue.vehicle 
-            end
-
-            if @issue.respond_to?(:estimate=) && parent_issue.respond_to?(:estimate)
-              @issue.estimate = parent_issue.estimate 
+            # --- COPY REGISTERED FIELDS ---
+            # Iterate over any fields registered by other plugins
+            SubtaskFieldCopier.registered_fields.each do |field|
+              setter = "#{field}="
+              
+              # Use metaprogramming to check if the setter/getter exists, then apply
+              if @issue.respond_to?(setter) && parent_issue.respond_to?(field)
+                @issue.send(setter, parent_issue.send(field))
+              end
             end
           end
         end

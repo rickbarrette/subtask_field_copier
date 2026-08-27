@@ -44,6 +44,27 @@ Once installed and the server is restarted, there is no configuration needed. Si
 
 ---
 
+### Developer API: Registering Custom Fields
+
+If you have built your own Redmine plugins that add custom columns to the issues database table, you can register those fields to be automatically copied when a subtask is created.
+In your custom plugin's init.rb, append your field names (as symbols) to the SubtaskFieldCopier.registered_fields array.
+It is best practice to wrap this in a Rails.configuration.to_prepare block and check if the module is defined, ensuring your plugin won't crash if the Subtask Field Copier is uninstalled:
+
+```Ruby
+Rails.configuration.to_prepare do
+  if defined?(SubtaskFieldCopier)
+    # Register your custom issue fields here
+    SubtaskFieldCopier.registered_fields << :vehicle
+    SubtaskFieldCopier.registered_fields << :customer
+    
+    # Ensure there are no duplicates (useful for development hot-reloading)
+    SubtaskFieldCopier.registered_fields.uniq!
+  end
+end
+```
+
+---
+
 ## License
 
 > The MIT License (MIT)

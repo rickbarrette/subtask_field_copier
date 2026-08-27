@@ -10,6 +10,9 @@
 
 module SubtaskFieldCopier
 
+  mattr_accessor :registered_fields
+  self.registered_fields = []
+
   def self.setup
    unless IssuesController.ancestors.include?(SubtaskFieldCopier::Patches::IssuesControllerPatch)
       IssuesController.prepend SubtaskFieldCopier::Patches::IssuesControllerPatch
