@@ -11,7 +11,7 @@ Redmine::Plugin.register :subtask_field_copier do
   name 'Redmine subtask field copier'
   author 'Rick Barrette'
   description 'Copies Issue attributes to subtasks'
-  version '2026.8.1'
+  version '2026.10.0'
   url 'https://github.com/rickbarrette/subtask_field_copier'
   author_url 'https://github.com/rickbarrette'
 
